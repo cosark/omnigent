@@ -661,7 +661,11 @@ def test_main_does_not_retry_a_rejected_launch_token(
     ids=["transient-outage", "rejected-credential"],
 )
 def test_token_cli_retries_outage_but_preserves_rejection(
-    tmp_path: Path, initial_status: int, expected_requests: int, expected_output: str
+    tmp_path: Path,
+    _credential_env: dict[str, str],
+    initial_status: int,
+    expected_requests: int,
+    expected_output: str,
 ) -> None:
     """Cross real CLI/TCP boundaries with production retry policy and synthetic credentials."""
     workspace = "https://workspace.example.test"
@@ -690,8 +694,6 @@ def test_token_cli_retries_outage_but_preserves_rejection(
     server_thread = threading.Thread(target=server.serve_forever, daemon=True)
     server_thread.start()
     try:
-        home = tmp_path / "home"
-        home.mkdir()
         sidecar = tmp_path / dc._SIDECAR_NAME
         sidecar.write_text(
             json.dumps(
@@ -704,7 +706,6 @@ def test_token_cli_retries_outage_but_preserves_rejection(
             )
         )
         sidecar.chmod(0o600)
-        repo = Path(__file__).resolve().parents[2]
         result = subprocess.run(
             [
                 sys.executable,
@@ -717,16 +718,7 @@ def test_token_cli_retries_outage_but_preserves_rejection(
                 workspace,
             ],
             cwd=tmp_path,
-            env={
-                "HOME": str(home),
-                "DATABRICKS_CONFIG_FILE": str(home / ".databrickscfg"),
-                "OMNIGENT_CONFIG_HOME": str(home / ".omnigent"),
-                "OMNIGENT_DATA_DIR": str(home / ".omnigent"),
-                "PYTHONDONTWRITEBYTECODE": "1",
-                "PYTHONPATH": os.pathsep.join(
-                    str(repo / path) for path in (".", "sdks/python-client", "sdks/ui")
-                ),
-            },
+            env=_credential_env,
             capture_output=True,
             text=True,
             timeout=20,
