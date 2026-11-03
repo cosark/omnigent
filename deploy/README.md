@@ -16,7 +16,8 @@ Omnigent server is live with HTTPS in a few minutes.
 | Platform | Button | Docs |
 |---|---|---|
 | **Render** | [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/omnigent-ai/omnigent) | [`render/README.md`](render/README.md) |
-| **Railway** | *(button pending; see below)* | [`railway/README.md`](railway/README.md) |
+| **RepoCloud** | [![Deploy on RepoCloud](https://d16t0pc4846x52.cloudfront.net/deploylobe.svg)](https://repocloud.io/details/Omnigent/) | One-click template, no other instructions required. |
+| **Railway** | [![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/omnigent) | [`railway/README.md`](railway/README.md) |
 
 <!-- TODO(oss-release): publish the Railway template at railway.com/new/template
      once the repo is public, then replace the Railway row above with:
